@@ -2,10 +2,21 @@ version: '2'
 
 services:
     reverseproxy:
+        build: .
+        hostname: proxy
+        depends_on:
+          - web1
         image: reverseproxy
         ports:
             - 8080:8080
+        networks:
+                - app_network
     web1:
-        depends_on:
-            - reverseproxy
+        build: web/
+        hostname: web1
         image: nginx-web1
+        networks:
+                - app_network
+networks:
+        app_network:
+                external: true
